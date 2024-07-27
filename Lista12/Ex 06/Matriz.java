@@ -4,9 +4,10 @@ public class Matriz {
 	private int tamanhoLinha;
 	private int tamanhoColuna;
 	Matriz(int valorInicial) {
-		this.setTamanhoLinha(valorInicial);
-		this.setTamanhoColuna(valorInicial);
+		this.setTamanhoLinha(3);
+		this.setTamanhoColuna(3);
 		this.mat = this.criarMatriz(this.getTamanhoLinha(), this.getTamanhoColuna());
+		this.preencherMatriz(valorInicial);
 	}
 	
 	Matriz(int novoTamanhoLinha, int novoTamanhoColuna) {
@@ -42,15 +43,13 @@ public class Matriz {
 	public int[][] criarMatriz(int linhas, int colunas) {
 		return new int[linhas][colunas];
 	}
-	
-	public void preencherMatriz() {
+	public void preencherMatriz(int valor) {
 		for(int i = 0;i < this.getTamanhoLinha();i++) {
 			for(int j = 0;j < this.getTamanhoColuna();j++) {
-				this.setElemento(i, j, 1);
+				this.setElemento(i, j, valor);
 			}
 		}
 	}
-	
 	
 	public void lerMatriz(Scanner scanner) {
 		int valor;
@@ -62,7 +61,6 @@ public class Matriz {
 		}
 	}
 	public void imprimeMatriz() {
-		System.out.println("Matriz");
 		for(int i = 0;i < this.getTamanhoLinha();i++) {
 			for(int j = 0;j < this.getTamanhoColuna();j++) {
 				System.out.printf("%d ", this.getElemento(i, j));
@@ -71,87 +69,26 @@ public class Matriz {
 		}
 	}
 	
-	public int somaLinha(int linha) {
-		int soma = 0;
-		for(int i = 0;i < this.getTamanhoColuna(); i++) {
-			soma += this.getElemento(linha, i);
+	public void imprimeSomaMatriz(Matriz mat) {
+		for(int i = 0;i < this.getTamanhoLinha();i++) {
+			for(int j = 0;j < this.getTamanhoColuna();j++) {
+				System.out.printf("%d ", this.getElemento(i, j) + mat.getElemento(i, j));
+			}
+			System.out.printf("\n");
 		}
-		return soma;
 	}
 	
-	public int somaColuna(int coluna) {
-		int soma = 0;
-		for(int i = 0;i < this.getTamanhoLinha(); i++) {
-			soma += this.getElemento(i, coluna);
-		}
-		return soma;
-	}
-	
-	public int somaDiagonalPrincipal() {
-		int soma = 0;
-		for(int i = 0;i < this.getTamanhoLinha(); i++) {
-			for(int j = 0; j < this.getTamanhoColuna(); j++) {
-				if(i == j) {
-					soma += this.getElemento(i, j);
-				}	
-			}
-		}
-		return soma;
-	}
-	
-	public int somaDiagonalSecundaria() {
-		int soma = 0;
-		for(int i = 0;i < this.getTamanhoLinha(); i++) {
-			for(int j = 0; j < this.getTamanhoColuna(); j++) {
-				if(i + j + 1 == this.getTamanhoColuna()) {
-					soma += this.getElemento(i, j);
-				}	
-			}
-		}
-		return soma;
-	}
-	
-	public void ehQuadradoMagico() {
-		boolean ehQuadradoMagico = true;
-		int valorMagico = this.somaLinha(0);
-		
-		//verificar as linhas
-		for(int i = 1; i < this.getTamanhoLinha() && ehQuadradoMagico;i++) {
-			if(this.somaLinha(i) != valorMagico) {
-				ehQuadradoMagico = false;
-			}
-		}
-		//verificar as colunas
-		for(int i = 0; i < this.getTamanhoLinha() && ehQuadradoMagico;i++) {
-			if(this.somaColuna(i) != valorMagico) {
-				ehQuadradoMagico = false;
-			}
-		}
-		//verificar as diagonais
-		if(this.somaDiagonalPrincipal() != valorMagico && ehQuadradoMagico) {
-			ehQuadradoMagico = false;
-		}
-		if(this.somaDiagonalSecundaria() != valorMagico && ehQuadradoMagico) {
-			ehQuadradoMagico = false;
-		}
-		
-		if(ehQuadradoMagico) {
-			System.out.println("eh um quadrado magico!");
-		}
-		else {
-			System.out.println("nao eh um quadrado magico!");
-		}
-	}
-
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		int fator;
+		int valorInicial1;
+		int valorInicial2;
 		Matriz matriz1;
-		fator = scanner.nextInt();
-		matriz1 = new Matriz(fator, fator);
-		matriz1.lerMatriz(scanner);
-		matriz1.imprimeMatriz();
-		matriz1.ehQuadradoMagico();
+		Matriz matriz2;
+		valorInicial1 = scanner.nextInt();
+		valorInicial2 = scanner.nextInt();
+		matriz1 = new Matriz(valorInicial1);
+		matriz2 = new Matriz(valorInicial2);
+		matriz1.imprimeSomaMatriz(matriz2);
 		scanner.close();
 	}
 }

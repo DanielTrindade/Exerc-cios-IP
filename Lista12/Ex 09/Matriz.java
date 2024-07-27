@@ -1,18 +1,29 @@
 import java.util.Scanner;
 public class Matriz {
 	private int[][] mat;
-	private int ordem;
-	Matriz(int novaOrdem) {
-		this.setOrdem(novaOrdem);
-		this.mat = this.criarMatriz(this.getOrdem(), this.getOrdem());
+	private int tamanhoLinha;
+	private int tamanhoColuna;
+	Matriz(int novoTamanhoLinha, int novoTamanhoColuna) {
+		this.setTamanhoLinha(novoTamanhoLinha);
+		this.setTamanhoColuna(novoTamanhoColuna);
+		this.mat = this.criarMatriz(this.getTamanhoLinha(), this.getTamanhoColuna());
+		this.preencherMatriz();
 	}
 	
-	public void setOrdem(int novaOrdem) {
-		this.ordem = novaOrdem;
+	public void setTamanhoLinha(int novoTamanhoLinha) {
+		this.tamanhoLinha = novoTamanhoLinha;
 	}
 	
-	public int getOrdem() {
-		return this.ordem;
+	public int getTamanhoLinha() {
+		return this.tamanhoLinha;
+	}
+	
+	public void setTamanhoColuna(int novoTamanhoColuna) {
+		this.tamanhoColuna = novoTamanhoColuna;
+	}
+	
+	public int getTamanhoColuna() {
+		return this.tamanhoColuna;
 	}
 	
 	public void setElemento(int linha, int coluna, int novoElemento) {
@@ -26,50 +37,53 @@ public class Matriz {
 	public int[][] criarMatriz(int linhas, int colunas) {
 		return new int[linhas][colunas];
 	}
+	public void preencherMatriz() {
+		for(int i = 0;i < this.getTamanhoLinha();i++) {
+			for(int j = 0;j < this.getTamanhoColuna();j++) {
+				boolean isDiagonalPrincipal = i == j;
+				boolean isDiagonalSecundaria = i + j + 1 == this.getTamanhoLinha();
+				if(isDiagonalPrincipal && !isDiagonalSecundaria) {
+					this.setElemento(i, j, 1);
+				} 
+				else if(isDiagonalSecundaria) {
+					this.setElemento(i, j, 2);
+				}
+				else {
+					this.setElemento(i, j, 3);
+				}
+			}
+		}
+	}
 	
 	public void lerMatriz(Scanner scanner) {
 		int valor;
-		for(int i = 0;i < this.getOrdem();i++) {
-			for(int j = 0;j < this.getOrdem();j++) {
+		for(int i = 0;i < this.getTamanhoLinha();i++) {
+			for(int j = 0;j < this.getTamanhoColuna();j++) {
 				valor = scanner.nextInt();
 				this.setElemento(i, j, valor);
 			}
 		}
 	}
 	public void imprimeMatriz() {
-		for(int i = 0;i < this.getOrdem();i++) {
-			for(int j = 0;j < this.getOrdem();j++) {
-				System.out.printf("%d ", this.getElemento(i, j));
+		for(int i = 0;i < this.getTamanhoLinha();i++) {
+			for(int j = 0;j < this.getTamanhoColuna();j++) {
+				System.out.printf("%d", this.getElemento(i, j));
 			}
 			System.out.printf("\n");
 		}
 	}
-	public void matrizTransposta(Matriz matA) {
-		for(int i = 0;i < this.getOrdem(); i++) {
-			for(int j = 0; j < this.getOrdem(); j++) {
-				this.setElemento(i, j, matA.getElemento(j, i));
-			}
-		}
-	}
-	
-	public void imprimeTransposta(Matriz matA) {
-		this.matrizTransposta(matA);
-		System.out.println("Matriz A");
-		matA.imprimeMatriz();
-		System.out.println("Matriz Transposta");
-		this.imprimeMatriz();
-	}
 	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		int ordem;
-		Matriz matrizA;
-		Matriz matrizTransposta;
-		ordem = scanner.nextInt();
-		matrizA = new Matriz(ordem);
-		matrizTransposta = new Matriz(ordem);
-		matrizA.lerMatriz(scanner);
-		matrizTransposta.imprimeTransposta(matrizA);
+		int dimensao;
+		Matriz matriz;
+		dimensao = scanner.nextInt();
+		while(dimensao > 0) {
+			matriz = new Matriz(dimensao, dimensao);
+			matriz.imprimeMatriz();
+			dimensao = scanner.nextInt();
+		}
+		
 		scanner.close();
 	}
 }
